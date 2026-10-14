@@ -2,6 +2,22 @@
 
 A local-first tool for Shopify inventory operators. Compare a fresh All states inventory CSV against an edited copy before import. Download a review report, not an import file. No store access or account needed.
 
+## Choose a tool
+
+| Weekly task | Free browser tool | What it does not do |
+| --- | --- | --- |
+| Review quantities you edited before import | [Inventory edit reviewer](https://mceeomoba.github.io/vertex-inventory-review/) | No store connection or import approval |
+| Compare earlier and later inventory exports | [Snapshot comparison](https://mceeomoba.github.io/vertex-inventory-review/snapshots.html) | No live monitoring, sale attribution or proof of deletion |
+| Preflight a product catalog CSV | [Product CSV preflight](https://mceeomoba.github.io/vertex-inventory-review/products.html) | No automatic cleanup, file rewriting or full Shopify validation |
+
+[Quick start and fictional inventory sample downloads](https://mceeomoba.github.io/vertex-inventory-review/guide.html). Each tool has a fictional example button. No store is needed to try it. Use the tool's Scope and privacy section before choosing real files.
+
+## Public feedback
+
+Posted for the Vertex project; AI-assisted.
+
+[Project feedback issue](https://github.com/mceeomoba/vertex-inventory-review/issues/1) or [structured feedback form](https://github.com/mceeomoba/vertex-inventory-review/issues/new?template=feedback.yml). GitHub account required. Your username and everything submitted, including screenshots and links, are public. Do not include identifying details, store exports, customer or order data, credentials, private links, or confidential information. Fictional examples only. This is not a support or security-reporting channel. Respondents' identities will not be reused for outreach. Independent of Shopify, not an official Shopify app. No customer use or demand is claimed.
+
 ## Use
 
 Open https://mceeomoba.github.io/vertex-inventory-review/ . Export steps and fictional sample downloads: https://mceeomoba.github.io/vertex-inventory-review/guide.html .
@@ -18,7 +34,7 @@ Review counts, exceptions-only view, exact-case location filter and case-insensi
 
 ## Test
 
-Run `node test.cjs`. Version 0.2 passes 34 synthetic-fixture tests. No live merchant file, store import, revenue or customer deployment is claimed.
+Run `node test.cjs` (34 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), and `node product-test.cjs` (26 product-preflight tests). All 88 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
 
 ## Product decision - October 14, 2026
 
@@ -32,3 +48,9 @@ Initial audience: remote operators for US, UK, Canadian and Australian stores. T
 - Public operator request for bulk inventory edits, discovery only, not an identified customer: https://www.reddit.com/r/shopify/comments/1ure2dg/mass_editing_inventory_quantities_help/
 
 The official format already includes stale-value protection. This tool makes a separate human-readable change review; it does not replace that protection. No claim is made that other tools do not offer similar checks.
+
+## Additional sources
+
+- Product CSV checks: https://help.shopify.com/en/manual/products/import-export/using-csv
+
+Product preflight supports a limited set of current and common legacy headers, required product fields, variant-option dependencies, price/status formats and review notes for repeated variants or reused SKUs. It does not modify an export. Blank continuation titles and intentional repeated/image rows require care, not automatic deletion. Snapshot added/missing labels describe export membership, not a store event.
