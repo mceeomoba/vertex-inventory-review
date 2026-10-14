@@ -25,4 +25,19 @@ t('quoted input',()=>a.equal(codes(ok.replace('Demo Shirt','"Demo, Shirt"')).len
 t('BOM input',()=>a.equal(codes('\uFEFF'+ok).length,0));
 t('report formula guard',()=>a.ok(productReport([{Handle:'=1+1'}]).includes("'=1+1")));
 t('report CRLF',()=>a.ok(productReport(checkProductCSV(ok.replace('active','ready')).findings).includes('\r\n')));
+
+let packedHead='URL handle,Title,Option1 name,Option1 value,Packed product length,Packed product width,Packed product height,Packed product dimension unit,Requires shipping\n';
+let pk=(v)=>codes(packedHead+'shirt,Shirt,Title,Default Title,'+v+'\n');
+t('packed complete cm',()=>a.equal(pk('2,3,4,cm,true').length,0));
+t('packed complete in',()=>a.equal(pk('2,3,4,in,true').length,0));
+t('packed partial row warns',()=>a.ok(pk('2,,4,cm,true').includes('PACKED_FIELDS_INCOMPLETE')));
+t('packed blank variant warns clear',()=>a.ok(pk(',,,,true').includes('PACKED_SIZE_BLANK_CLEAR')));
+t('nonshipping warns clear',()=>a.ok(pk('2,3,4,cm,false').includes('PACKED_SIZE_CLEARED_NONSHIPPING')));
+t('nonshipping ignores incomplete dimensions',()=>a.ok(!pk('2,,,bad,false').includes('PACKED_FIELDS_INCOMPLETE')));
+t('nonshipping ignores unit validation',()=>a.ok(!pk('2,,,bad,false').includes('PACKED_UNIT')));
+t('nonshipping without dimensions warns clear',()=>a.ok(codes('URL handle,Title,Requires shipping\nshirt,Shirt,false\n').includes('PACKED_SIZE_CLEARED_NONSHIPPING')));
+t('packed bad unit warns',()=>a.ok(pk('2,3,4,mm,true').includes('PACKED_UNIT')));
+t('partial packed headers with value warns',()=>a.ok(codes('URL handle,Title,Packed product length\nshirt,Shirt,2\n').includes('PACKED_FIELDS_INCOMPLETE')));
+t('no packed columns no blank clear',()=>a.ok(!codes(ok).includes('PACKED_SIZE_BLANK_CLEAR')));
+t('blank image continuation no blank clear',()=>a.ok(!codes(packedHead+'shirt,Shirt,Title,Default Title,2,3,4,cm,true\nshirt,,,,,,,,\n').includes('PACKED_SIZE_BLANK_CLEAR')));
 console.log(n+' tests passed. Synthetic fixtures only.');
