@@ -15,6 +15,7 @@ body:
       options:
         - Inventory edit reviewer
         - Snapshot comparison
+        - Product CSV preflight
         - Other
     validations:
       required: true
