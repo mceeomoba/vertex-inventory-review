@@ -26,4 +26,17 @@ test('formula neutralization',()=>assert.ok(csvReport([{Handle:'=HYPERLINK("bad"
 test('unchanged',()=>assert.equal(compare(b,head+'shirt,Blue,Main,10,10').rows[0].Status,'UNCHANGED'));
 test('duplicate headers stop',()=>assert.throws(()=>parseCSV('a,a\nx,z'),/Duplicate/));
 test('missing variant stops',()=>assert.throws(()=>compare(b,head+'shirt,,Main,10,12'),/blank Option1/));
+
+
+const sample=[{Handle:'shirt',Option1:'Blue',Option2:'M',Option3:'',Location:'Main',Status:'PLANNED_CHANGE'},{Handle:'mug',Option1:'Default Title',Location:'Main',Status:'STALE_SNAPSHOT'},{Handle:'shirt',Option1:'Red',Location:'Warehouse',Status:'UNCHANGED'},{Handle:'bad',Option1:'Default Title',Location:'main',Status:'INVALID_NEW_QUANTITY'}];
+test('review counts',()=>assert.deepEqual(reviewSummary(sample),{planned:1,unchanged:1,exceptions:2}));
+test('exceptions filter',()=>assert.equal(reviewRows(sample,'exceptions').length,2));
+test('planned filter',()=>assert.equal(reviewRows(sample,'PLANNED_CHANGE')[0].Handle,'shirt'));
+test('unchanged filter',()=>assert.equal(reviewRows(sample,'UNCHANGED')[0].Location,'Warehouse'));
+test('location remains case-sensitive',()=>assert.equal(reviewRows(sample,'all','Main').length,2));
+test('handle search ignores case and edge space',()=>assert.equal(reviewRows(sample,'all','',' SHIRT ').length,2));
+test('option search',()=>assert.equal(reviewRows(sample,'all','','blue').length,1));
+test('combined filters',()=>assert.equal(reviewRows(sample,'exceptions','Main','mug').length,1));
+test('filter leaves source unchanged',()=>{let before=JSON.stringify(sample);reviewRows(sample,'exceptions');assert.equal(JSON.stringify(sample),before);});
+test('empty result supported',()=>assert.equal(reviewRows(sample,'all','','absent').length,0));
 console.log(count+' tests passed. Synthetic fixtures only.');
