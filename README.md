@@ -4,15 +4,21 @@ A local-first tool for Shopify inventory operators. Compare a fresh All states i
 
 ## Use
 
+Open https://mceeomoba.github.io/vertex-inventory-review/ . Export steps and fictional sample downloads: https://mceeomoba.github.io/vertex-inventory-review/guide.html .
+
 Download `index.html` and open it in a modern browser. Choose your fresh export and edited file, then select Review changes. The fictional example works without files. Selected files stay in that browser; the tool has no network calls, external scripts or analytics. Do not upload private inventory exports into this repository or issues.
 
 Flags stale snapshot quantities, unmatched identities, invalid new quantities and not-stocked/current-value exceptions. Stops on duplicate identities, missing required columns, malformed CSV and missing variant fields. Uses handle + option values + case-sensitive location, never SKU alone.
 
 Blank new quantities are skipped, zero and negative whole numbers are explicit instructions. This is a review aid, not import approval. Keep Shopify's On hand (current) safety validation and review Shopify's own import summary. Available-only exports are not supported.
 
+## Version 0.2
+
+Review counts, exceptions-only view, exact-case location filter and case-insensitive handle/option search. Filters affect the screen only; the full CSV report always contains every compared instruction. Changing either file clears old results so an earlier review is not mistaken for the newly selected files.
+
 ## Test
 
-Run `node test.cjs`. Version 0.1 passes 24 synthetic-fixture tests. No live merchant file, store import, revenue or customer deployment is claimed.
+Run `node test.cjs`. Version 0.2 passes 34 synthetic-fixture tests. No live merchant file, store import, revenue or customer deployment is claimed.
 
 ## Product decision - October 14, 2026
 
