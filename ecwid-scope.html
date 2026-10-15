@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ecwid import scope check | Vertex</title><meta name="description" content="Compare a current Ecwid catalog export with a planned CSV import. Review omitted options and variations before importing. Runs in your browser."><style>
+:root{color-scheme:light;font-family:system-ui,sans-serif;color:#251f21;background:#fff;font-size:16px}*{box-sizing:border-box}body{margin:0}main{max-width:960px;margin:auto;padding:28px 24px 64px}header{border-bottom:1px solid #eae9ea;padding-bottom:24px;margin-bottom:28px}.eyebrow{font-size:13px;letter-spacing:.08em;color:#585254}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(30px,5vw,44px);line-height:1.12;margin:14px 0}h2{font-size:21px;font-weight:600;margin-top:28px}p,li{line-height:1.6}p{max-width:76ch}.muted,small{color:#585254}.notice{background:#f4efec;padding:16px;border-radius:8px;line-height:1.55}.steps{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}.field{border:1px solid #b9b5b6;border-radius:8px;padding:20px;min-width:0}label{font-weight:600;display:block;line-height:1.5}input[type=file]{display:block;width:100%;margin-top:16px;min-height:44px;font-size:14px}input[type=checkbox]{width:20px;height:20px;flex-shrink:0}.check{display:flex;gap:12px;font-size:15px;align-items:flex-start;font-weight:400;margin:20px 0}button,.button{font:inherit;min-height:48px;border-radius:5px;padding:10px 20px;border:1px solid #251f21;cursor:pointer;background:#251f21;color:white;margin:4px 8px 4px 0}button.secondary{background:white;color:#251f21}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #42806e;outline-offset:3px}.danger{color:#b51e2e;font-weight:600}.finding{border-top:1px solid #eae9ea;padding:18px 0;overflow-wrap:anywhere}.finding p{margin:5px 0}.finding h3{font-size:17px;margin:0 0 8px}.finding dl{margin:0;font-size:14px;line-height:1.6}.finding dt{color:#585254}.finding dd{margin:0 0 6px}a{color:#285d4e}footer{border-top:1px solid #eae9ea;margin-top:36px;padding-top:20px;font-size:14px}.hidden{display:none}@media(max-width:620px){.steps{grid-template-columns:1fr}main{padding:24px 20px 48px}.field{padding:16px}button{width:100%;margin:5px 0}}
+</style></head><body><main><header><div class="eyebrow">VERTEX · FREE LOCAL TOOL</div><h1>Before an Ecwid import,<br>check what is left out.</h1><p>Changing a few variations can replace more than those rows. Compare a current catalog export with your planned import and review options or variations missing from a replacement scope.</p><p class="muted">For Ecwid's current CSV format. No login, installation or store connection.</p></header>
+<div class="notice"><strong>A review aid, not import approval.</strong> This checks omitted options, input fields and variations only. It does not check prices, stock, images, every import rule or your live store. Keep an untouched export and test changes in Ecwid before relying on them.</div>
+<section aria-labelledby="inputs"><h2 id="inputs">Compare two CSV files</h2><p>Your file contents stay in this browser. This page does not upload them or save them in browser storage. Close or reload the page to clear them.</p><div class="steps"><div class="field"><label for="baseline">1. Current full catalog export</label><p class="muted">Export your current catalog from the same store. Include product, option and variation rows.</p><input id="baseline" type="file" accept=".csv,text/csv"></div><div class="field"><label for="planned">2. Planned import</label><p class="muted">The comma-separated CSV you intend to import. Not the legacy Ecwid format.</p><input id="planned" type="file" accept=".csv,text/csv"></div></div><label class="check"><input id="confirm" type="checkbox"><span>I have a fresh, complete catalog export from the same store, including all relevant options and variations.</span></label><button id="compare">Review omitted rows</button><button class="secondary" id="demo">Try a fictional example</button><button class="secondary" id="clear">Clear files and results</button><p id="status" role="status" aria-live="polite"></p></section>
+<section id="results" class="hidden" aria-live="polite"><h2>Review results</h2><div id="summary" class="notice"></div><div id="issues"></div><div id="findings"></div><button id="download" class="secondary hidden">Download omitted-row report</button><p class="muted">No changes have been made to your files or store. A report is not a corrected import file.</p></section>
+<section><h2>What this checks</h2><p>For straightforward catalog edits, Ecwid's <a href="https://support.ecwid.com/hc/en-us/articles/360020912379-Bulk-Product-Editor" target="_blank" rel="noopener noreferrer">native Bulk Product Editor</a> may let you avoid CSV import entirely. This tool is for reviewing an import you already need to make.</p><ul><li>If a planned import has variation rows for a product, it lists baseline variations absent from that product's planned rows.</li><li>If it has option or input-field rows, it also lists baseline options, input fields and variations absent from the planned replacement set.</li><li>Products with only product-level edits do not trigger these replacement checks. Products absent from the import are not marked as deleted.</li></ul><p>Matching uses exact product IDs or unique product SKUs, then option names, types and values or variation option combinations. It does not match by product name. Conflicting identities and unsupported records are flagged for manual review.</p><p class="muted">An incomplete baseline can hide omissions. A changed option name or type can appear as an omission even if intentional. New products, changed parent SKUs/IDs, translated option headers and other ambiguous mappings need manual review. Maximum 10 MB per file.</p></section>
+<section><h2>Did this catch a real omission?</h2><p>Optional feedback helps decide whether to keep building this tool. Tell us your country, whether you used your own files, and whether the report found an omission you had missed. Do not send catalog files, screenshots or reports containing identifiers, store or account details, customer information, credentials or other private data.</p><p><a href="mailto:novaagent@mail.instinct.com?subject=Ecwid%20import%20scope%20check%20feedback">Email optional feedback</a> (opens your mail app). Sending email shares your address and message with Vertex. No message is sent by this page. Vertex uses feedback and the accompanying email address only to evaluate this research experiment and handle that feedback. Do not include anything you want kept confidential. No automatic deletion or retention deadline is promised.</p></section><section><h2>Why these rows matter</h2><p>Ecwid documents replacement behavior for <a href="https://support.ecwid.com/hc/en-us/articles/8678710875164-Case-study-3-Importing-a-product-with-options-and-variations" target="_blank" rel="noopener noreferrer">variation imports</a> and <a href="https://support.ecwid.com/hc/en-us/articles/8678451883036-Case-study-2-Importing-a-product-with-options-or-input-fields" target="_blank" rel="noopener noreferrer">option and input-field imports</a>. Review its <a href="https://support.ecwid.com/hc/en-us/articles/8578428241436-Format-guidelines-for-the-CSV-file" target="_blank" rel="noopener noreferrer">current CSV format</a> before importing. Rules checked against these pages on October 15, 2026.</p></section>
+<footer><p>Built by Vertex. Independent tool, not affiliated with Ecwid or Lightspeed. Free experimental release for store owners in the US, UK, Canada and Australia. No paid service is offered here.</p><p>No analytics, third-party scripts, cookies or in-page tracking are included. Downloaded reports remain wherever you save them; keep them private. Your hosting provider can still receive ordinary page-request information. This page cannot measure real usage or validate customer demand without a separate opt-in response.</p></footer></main><script>
+'use strict';
+(function(root){
+function parseCSV(text){
+ if(text.length>10*1024*1024)throw Error('Use a file smaller than 10 MB.');
+ text=text.replace(/^\uFEFF/,'');
+ const rows=[],recordNums=[];let record=1,row=[],v='',quoted=false,closed=false;
+ for(let i=0;i<text.length;i++){
+  const c=text[i];
+  if(quoted){if(c==='"'){if(text[i+1]==='"'){v+='"';i++;}else{quoted=false;closed=true;}}else v+=c;continue;}
+  if(c==='"'){if(v||closed)throw Error('Unexpected quote near CSV record '+(rows.length+1));quoted=true;continue;}
+  if(c===','||c==='\n'||c==='\r'){
+   row.push(v);v='';closed=false;
+   if(c!==','){if(c==='\r'&&text[i+1]==='\n')i++;if(row.some(x=>x!=='')){rows.push(row);recordNums.push(record);}record++;row=[];}continue;
+  }
+  if(closed)throw Error('Unexpected text after a closing quote near CSV record '+(rows.length+1));v+=c;
+ }
+ if(quoted)throw Error('Unclosed CSV quote.');
+ if(v||row.length||closed){row.push(v);if(row.some(x=>x!=='')){rows.push(row);recordNums.push(record);}}
+ if(rows.length<2)throw Error('Need a header and at least one data record. Use a comma-separated current-format Ecwid catalog CSV.');
+ const headers=rows.shift();recordNums.shift();
+ if(headers.some(x=>!x)||new Set(headers).size!==headers.length)throw Error('Blank or duplicate column names are not supported.');
+ if(!headers.includes('product_internal_id')&&!headers.includes('product_sku'))throw Error('Missing product_internal_id or product_sku. Legacy Ecwid CSV is not supported.');
+ return {headers,rows:rows.map((r,i)=>{if(r.length!==headers.length)throw Error('CSV record '+(i+2)+' has '+r.length+' fields; expected '+headers.length+'.');return Object.assign(Object.fromEntries(headers.map((h,j)=>[h,r[j]])),{_record:recordNums[i]});})};
+}
+function compare(baseText,nextText){
+ const base=parseCSV(baseText),next=parseCSV(nextText),issues=[],findings=[],groups=[],ids=new Map(),skus=new Map();
+ const addIndex=(m,k,g)=>{if(k){if(!m.has(k))m.set(k,[]);m.get(k).push(g);}};
+ for(const r of base.rows){if((r.type||'product')!=='product')continue;const g={id:r.product_internal_id||'',sku:r.product_sku||'',name:r.product_name||'',options:[],variants:[],incomingOptions:[],incomingVariants:[]};groups.push(g);addIndex(ids,g.id,g);addIndex(skus,g.sku,g);}
+ if(!groups.length)throw Error('Baseline needs product rows from a current catalog export, not only option or variation rows.');
+ function resolve(r,label){
+  const id=r.product_internal_id||'',sku=r.product_sku||'',a=id?(ids.get(id)||[]):[],b=sku?(skus.get(sku)||[]):[];
+  if((id&&a.length!==1)||(sku&&b.length!==1)||(!id&&!sku)||(id&&sku&&a[0]!==b[0])){issues.push({file:label,record:r._record,detail:'Parent identity is missing, ambiguous, conflicting or absent from baseline. ID: '+(id||'(blank)')+'; SKU: '+(sku||'(blank)')});return null;}
+  return id?a[0]:b[0];
+ }
+ const optionKey=r=>JSON.stringify([r.product_option_name,r.product_option_type,r.product_option_value||'']);
+ function variantKey(r){return JSON.stringify(Object.keys(r).filter(k=>k.startsWith('product_variation_option_')&&r[k]!=='').sort().map(k=>[k,r[k]]));}
+ function ingest(file,label){for(const r of file.rows){const type=r.type||'product';if(type==='product')continue;if(!['product_option','product_variation'].includes(type)){if(!['category','product_file','site_redirect','customer'].includes(type))issues.push({file:label,record:r._record,detail:'Unknown row type: '+type});continue;}
+   const g=resolve(r,label);if(!g)continue;
+   if(type==='product_option'&&(!r.product_option_name||!r.product_option_type)){issues.push({file:label,record:r._record,detail:'Option identity needs product_option_name and product_option_type.'});continue;}
+   if(type==='product_variation'&&variantKey(r)==='[]'){issues.push({file:label,record:r._record,detail:'Variation has no nonempty product_variation_option_* value.'});continue;}
+   g[label==='baseline'?(type==='product_option'?'options':'variants'):(type==='product_option'?'incomingOptions':'incomingVariants')].push(r);
+  }}
+ ingest(base,'baseline');ingest(next,'planned');
+ // Product-only edits do not activate replacement scopes, but unresolved identities are never called safe.
+ for(const r of next.rows){if((r.type||'product')==='product')resolve(r,'planned');}
+ let touched=0;
+ for(const g of groups){
+  const os=g.incomingOptions.length>0,vs=g.incomingVariants.length>0;
+  if(!os&&!vs)continue;touched++;
+  for(const [rows,key,label] of [[g.options,optionKey,'baseline options'],[g.variants,variantKey,'baseline variations'],[g.incomingOptions,optionKey,'planned options'],[g.incomingVariants,variantKey,'planned variations']]){
+   const seen=new Set();for(const r of rows){const k=key(r);if(seen.has(k))issues.push({file:label,record:r._record,detail:'Duplicate option/variation identity for '+(g.id||g.sku)});seen.add(k);}
+  }
+  function diff(old,newRows,key,kind){const included=new Set(newRows.map(key));for(const r of old)if(!included.has(key(r)))findings.push({product:g.name||g.sku||g.id,id:g.id,sku:g.sku,kind,record:r._record,detail:kind==='option / input field'?[r.product_option_name,r.product_option_type,r.product_option_value||'(no value)'].join(' | '):Object.keys(r).filter(k=>k.startsWith('product_variation_option_')&&r[k]!=='').map(k=>k.slice('product_variation_option_'.length)+'='+r[k]).join(' | '),variationSku:r.product_variation_sku||''});}
+  if(os)diff(g.options,g.incomingOptions,optionKey,'option / input field');
+  if(os||vs)diff(g.variants,g.incomingVariants,variantKey,'variation');
+ }
+ return {findings,issues,touched,baselineProducts:groups.length};
+}
+function reportCSV(result){const rows=[['Product','Product ID','Product SKU','Kind','Baseline record','Omitted identity','Variation SKU'],...result.findings.map(f=>[f.product,f.id,f.sku,f.kind,f.record,f.detail,f.variationSku])];return '\uFEFF'+rows.map(r=>r.map(v=>{v=String(v);if(/^[\s]*[=+@\-\t\r]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';}).join(',')).join('\r\n');}
+const api={parseCSV,compare,reportCSV};if(typeof module!=='undefined')module.exports=api;else root.ScopeCheck=api;
+})(typeof window==='undefined'?globalThis:window);
+
+</script><script>
+'use strict';
+const $=id=>document.getElementById(id);let result=null,run=0;
+const headers=['type','product_internal_id','product_sku','product_name','product_option_name','product_option_type','product_option_value','product_variation_option_Size','product_variation_sku'];
+const csv=rows=>[headers,...rows].map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+const demoBase=csv([['product','101','DRESS','Fictional dress','','','','',''],['product_option','101','DRESS','','Size','RADIOBUTTONS','S','',''],['product_option','101','DRESS','','Size','RADIOBUTTONS','M','',''],['product_variation','101','DRESS','','','','','S','DRESS-S'],['product_variation','101','DRESS','','','','','M','DRESS-M']]);
+const demoNext=csv([['product_variation','101','DRESS','','','','','S','DRESS-S']]);
+function text(tag,value,cls){const n=document.createElement(tag);n.textContent=value;if(cls)n.className=cls;return n;}
+function render(r,demo){result=r;$('results').classList.remove('hidden');$('summary').replaceChildren(text('p',(demo?'Fictional example. ':'')+r.findings.length+' omitted baseline row(s) across '+r.touched+' replacement scope(s). '+r.issues.length+' unresolved check(s).'));
+ $('summary').append(text('p',r.issues.length?'Unresolved records make this comparison incomplete. Do not treat it as an import decision.':'No identity blockers detected by this limited check. This is still not approval to import.'));
+ $('issues').replaceChildren();for(const i of r.issues)$('issues').append(text('p',i.file+' record '+i.record+': '+i.detail,'danger'));
+ $('findings').replaceChildren();if(r.findings.length>200)$('findings').append(text('p','Showing the first 200 omissions. Download the report for every omitted row.'));for(const f of r.findings.slice(0,200)){const card=text('article','','finding');card.append(text('h3',f.product+' · omitted '+f.kind));const dl=document.createElement('dl');for(const [k,v] of [['Product ID / SKU',(f.id||'(none)')+' / '+(f.sku||'(none)')],['Missing identity',f.detail],['Baseline CSV record',String(f.record)],['Variation SKU',f.variationSku||'(not provided)']]){dl.append(text('dt',k),text('dd',v));}card.append(dl);$('findings').append(card);}
+ $('download').classList.toggle('hidden',!r.findings.length);$('status').textContent=demo?'Fictional example loaded. Your selected files were not read.':'Comparison finished. Review every omission and unresolved check.';
+}
+async function readFile(f){if(f.size>10*1024*1024)throw Error('Use a file smaller than 10 MB.');return new TextDecoder('utf-8',{fatal:true}).decode(await f.arrayBuffer());}
+$('compare').onclick=async()=>{const token=++run;result=null;$('results').classList.add('hidden');if(!$('baseline').files[0]||!$('planned').files[0]){$('status').textContent='Select both CSV files first.';return;}if(!$('confirm').checked){$('status').textContent='Confirm that the baseline is fresh and complete before comparing.';return;}$('status').textContent='Reading your files locally...';try{const [a,b]=await Promise.all([readFile($('baseline').files[0]),readFile($('planned').files[0])]);if(token!==run)return;render(ScopeCheck.compare(a,b),false);}catch(e){if(token!==run)return;$('status').textContent='Could not compare: '+e.message;}};
+$('demo').onclick=()=>{run++;render(ScopeCheck.compare(demoBase,demoNext),true);};
+$('clear').onclick=()=>{run++;result=null;$('baseline').value='';$('planned').value='';$('confirm').checked=false;$('findings').replaceChildren();$('issues').replaceChildren();$('summary').replaceChildren();$('results').classList.add('hidden');$('status').textContent='Files and results cleared.';};
+for(const id of ['baseline','planned'])$(id).onchange=()=>{run++;result=null;$('results').classList.add('hidden');$('status').textContent='File changed. Run the comparison again.';};
+$('download').onclick=()=>{if(!result)return;const url=URL.createObjectURL(new Blob([ScopeCheck.reportCSV(result)],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='ecwid-omitted-row-review.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+
+</script></body></html>
