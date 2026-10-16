@@ -9,8 +9,25 @@ A local-first tool for Shopify inventory operators. Compare a fresh All states i
 | Review quantities you edited before import | [Inventory edit reviewer](https://mceeomoba.github.io/vertex-inventory-review/) | No store connection or import approval |
 | Compare earlier and later inventory exports | [Snapshot comparison](https://mceeomoba.github.io/vertex-inventory-review/snapshots.html) | No live monitoring, sale attribution or proof of deletion |
 | Preflight a product catalog CSV | [Product CSV preflight](https://mceeomoba.github.io/vertex-inventory-review/products.html) | No automatic cleanup, file rewriting or full Shopify validation |
+| Review omitted Ecwid option and variation rows | [Ecwid Import Scope Check](https://mceeomoba.github.io/vertex-inventory-review/ecwid-scope.html) | No store connection, corrected import file or import approval |
 
 [Quick start and fictional inventory sample downloads](https://mceeomoba.github.io/vertex-inventory-review/guide.html). Each tool has a fictional example button. No store is needed to try it. Use the tool's Scope and privacy section before choosing real files.
+
+## Ecwid CSV imports: review the rows you leave out
+
+A small variation update can have a wider scope than the rows you changed. Ecwid's [variation-import guide](https://support.ecwid.com/hc/en-us/articles/8678710875164-Case-study-3-Importing-a-product-with-options-and-variations) says that importing variation data deletes existing variations for that product that are not present in the file. Its [option and input-field guide](https://support.ecwid.com/hc/en-us/articles/8678451883036-Case-study-2-Importing-a-product-with-options-or-input-fields) describes replacement of omitted options, input fields and variations when importing new option or input-field data.
+
+For example, suppose a fictional product has Size=S, Size=M and Size=L variations. A planned variation import containing only S and L leaves M out. That missing row deserves review even if the intended change was just a price update. This is a fictional example, not a customer result.
+
+Before importing:
+
+1. Keep an untouched, fresh, complete export from the same store, including relevant product, option and variation rows.
+2. Compare that export with the planned current-format, comma-separated CSV.
+3. Review omitted identities against Ecwid's current documentation. Do not treat a clean report as permission to import. Back up and test changes in Ecwid.
+
+[Try the free Ecwid Import Scope Check](https://mceeomoba.github.io/vertex-inventory-review/ecwid-scope.html), or use its fictional example without real files. The page compares files in your browser without uploading their contents or connecting to your store. It lists omitted options, input fields and variation combinations within supported replacement scopes. It does not rewrite files, validate prices, stock or images, or check every import rule. Incomplete exports, changed IDs/SKUs, translated option headers and ambiguous matches need manual review. For straightforward edits, Ecwid's native Bulk Product Editor may avoid a CSV import entirely.
+
+Vertex's free experiment is for store owners in the US, UK, Canada and Australia. Independent of Ecwid and Lightspeed. No paid service, merchant validation or revenue is claimed. Documentation checked October 16, 2026.
 
 ## Public feedback
 
