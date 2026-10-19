@@ -45,13 +45,15 @@ Flags stale snapshot quantities, unmatched identities, invalid new quantities an
 
 Blank new quantities are skipped, zero and negative whole numbers are explicit instructions. This is a review aid, not import approval. Keep Shopify's On hand (current) safety validation and review Shopify's own import summary. Available-only exports are not supported.
 
-## Version 0.2
+## Version 0.3
+
+Selecting a product catalog export or an Available-only inventory export now stops the review with a message naming the file type and the export steps that fix it, instead of a generic missing-column stop. Version 0.2 added review counts, exceptions-only view, exact-case location filter and case-insensitive handle/option search.
 
 Review counts, exceptions-only view, exact-case location filter and case-insensitive handle/option search. Filters affect the screen only; the full CSV report always contains every compared instruction. Changing either file clears old results so an earlier review is not mistaken for the newly selected files.
 
 ## Test
 
-Run `node test.cjs` (34 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), and `node product-test.cjs` (38 product-preflight tests). All 100 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
+Run `node test.cjs` (38 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), and `node product-test.cjs` (38 product-preflight tests). All 104 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
 
 ## Product decision - October 14, 2026
 
