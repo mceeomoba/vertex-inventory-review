@@ -26,6 +26,11 @@ test('formula neutralization',()=>assert.ok(csvReport([{Handle:'=HYPERLINK("bad"
 test('unchanged',()=>assert.equal(compare(b,head+'shirt,Blue,Main,10,10').rows[0].Status,'UNCHANGED'));
 test('duplicate headers stop',()=>assert.throws(()=>parseCSV('a,a\nx,z'),/Duplicate/));
 test('missing variant stops',()=>assert.throws(()=>compare(b,head+'shirt,,Main,10,12'),/blank Option1/));
+const prodCsv='Handle,Title,Body (HTML),Vendor,Variant Price\nshirt,Shirt,<p>x</p>,Acme,10.00\n',availCsv='Handle,Title,Ottawa,New York\nshirt,Jam,10,50\n',fullHead='Handle,Title,Option1 Value,Location,Available (not editable),On hand (current),On hand (new)\n';
+test('product catalog export named',()=>assert.throws(()=>compare(prodCsv,b),/Baseline: this looks like a product catalog export/));
+test('product catalog export named on edited side',()=>assert.throws(()=>compare(b,prodCsv),/Edited: this looks like a product catalog export/));
+test('available-only export named',()=>assert.throws(()=>compare(availCsv,b),/Available-only inventory export/));
+test('all-states extra columns accepted',()=>assert.equal(compare(fullHead+'shirt,Shirt,Blue,Main,10,10,',fullHead+'shirt,Shirt,Blue,Main,10,10,12').rows[0].Status,'PLANNED_CHANGE'));
 
 
 const sample=[{Handle:'shirt',Option1:'Blue',Option2:'M',Option3:'',Location:'Main',Status:'PLANNED_CHANGE'},{Handle:'mug',Option1:'Default Title',Location:'Main',Status:'STALE_SNAPSHOT'},{Handle:'shirt',Option1:'Red',Location:'Warehouse',Status:'UNCHANGED'},{Handle:'bad',Option1:'Default Title',Location:'main',Status:'INVALID_NEW_QUANTITY'}];
