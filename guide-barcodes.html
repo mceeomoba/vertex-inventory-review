@@ -14,7 +14,7 @@
 <li>Stop on a mismatch. Keep the damaged copy separate, rebuild from trusted data and inspect Shopify's import details. Keep a backup and test a small subset in a suitable test store when available.</li>
 </ol>
 <div class="box"><strong>Fictional example:</strong> <code>00012345678905</code> and <code>12345678905</code> are different text. A number format displaying extra zeros does not prove the saved CSV contains the original identifier. This is an illustration, not barcode validation.</div>
-<div class="box"><strong>Current-tool limit:</strong> The preflight page lists legacy aliases including Variant Barcode. It does not promise full support for the current plural Barcodes format. This guide does not claim it does. Check identifiers separately.</div>
+<div class="box"><strong>Current-tool limit:</strong> The preflight supports the current plural Barcodes header: it flags a file that has both Barcode and Barcodes, which Shopify documents as a failed import, counts values against the documented maximum of 20 per product or variant, and flags empty entries between semicolons. It does not validate barcode types, check digits or your store records, so still check identifiers separately.</div>
 <p class="muted"><strong>Topic source:</strong> An April 15, 2026 thread reported barcodes changing during a price-edit export/import. Its comments offered several explanations. This guide does not diagnose that store; it uses Microsoft's documented conversion risks and Shopify's current specification.</p>
 <p class="muted"><strong>Sources checked October 20, 2026:</strong></p>
 <ul>
