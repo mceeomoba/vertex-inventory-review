@@ -6,7 +6,7 @@
 <section><h2>Review the whole product group</h2>
 <ol>
 <li>Keep an untouched export from your own store and work on a copy. If the file came from elsewhere, confirm you have permission to use it and that it matches Shopify's current format.</li>
-<li>Find every row for the affected handle in the original and edited copies. Keep their original order while investigating. Shopify warns that sorting a product CSV can disconnect image links.</li>
+<li>Find every row for the affected handle in the original and edited copies. Keep their original order while investigating. Shopify warns that sorting a product CSV can disconnect image links. See the <a href="guide-sorted-csv-images.html">sorted-CSV image loss guide</a>.</li>
 <li>Check whether your filter removed the first row carrying the product title and other product-level information. A later row might be a variant or image continuation, not a complete replacement product row.</li>
 <li>Restore the product's structure from the original, not guesses. Preserve the title on the appropriate first row and the correct variant/image relationships. Shopify requires Title when creating a product, plus URL handle when adding variants. Updates require both columns.</li>
 <li>Open the free <a href="https://mceeomoba.github.io/vertex-inventory-review/products.html">Vertex Product CSV Preflight</a>. Choose create or update review as appropriate. With handles present, it checks first-row titles by handle and allows blank titles on continuation and image rows. If a create file has variants or image continuations but no handles, assign the correct handles and recheck; otherwise create mode treats each row as a separate product.</li>
