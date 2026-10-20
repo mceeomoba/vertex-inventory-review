@@ -56,4 +56,5 @@ t('barcodes empty entry warns',()=>a.ok(brow('A;; B').includes('BARCODES_EMPTY_E
 t('barcodes trailing separator warns',()=>a.ok(brow('A; ').includes('BARCODES_EMPTY_ENTRY')));
 t('barcodes escaped semicolon single value',()=>a.equal(brow('INTERNAL-\\;X').length,0));
 t('plural barcodes variant dependency',()=>a.ok(codes('URL handle,Title,Barcodes\na,A,123\n').includes('VARIANT_OPTIONS_MISSING')));
+t('header-only input names product rows',()=>a.throws(()=>checkProductCSV('Title\n'),/product row/));
 console.log(n+' tests passed. Synthetic fixtures only.');
