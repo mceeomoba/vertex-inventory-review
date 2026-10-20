@@ -53,7 +53,7 @@ Review counts, exceptions-only view, exact-case location filter and case-insensi
 
 ## Test
 
-Run `node test.cjs` (38 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), and `node product-test.cjs` (38 product-preflight tests). All 104 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
+Run `node test.cjs` (38 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), and `node product-test.cjs` (43 product-preflight tests). All 109 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
 
 ## Product decision - October 14, 2026
 
@@ -74,4 +74,4 @@ The official format already includes stale-value protection. This tool makes a s
 
 Product preflight supports a limited set of current and common legacy headers, required product fields, variant-option dependencies, price/status formats, packed-size completeness and clearing risks, and review notes for repeated variants or reused SKUs. It does not modify an export. Blank continuation titles and intentional repeated/image rows require care, not automatic deletion. Snapshot added/missing labels describe export membership, not a store event.
 
-Product CSV preflight v0.2 also checks the four packed-product fields, cm/in unit values, blank-size clearing on variant-like rows and the Requires shipping=false clearing rule. It does not validate dimensional ranges or actual store shipping settings.
+Product CSV preflight v0.2 also checks the four packed-product fields, cm/in unit values, blank-size clearing on variant-like rows and the Requires shipping=false clearing rule. It does not validate dimensional ranges or actual store shipping settings. Product CSV preflight v0.3 stops on files that are not readable UTF-8 and flags headers with leading or trailing spaces as errors, grounded in an operator report of Shopify failing such imports with vague quoting and invalid header errors (https://www.reddit.com/r/shopify/comments/1pax6pn/finally_figured_out_why_shopify_csv_imports_fail/). The preflight reviews the trimmed header so the remaining checks still run.
