@@ -53,7 +53,7 @@ Review counts, exceptions-only view, exact-case location filter and case-insensi
 
 ## Test
 
-Run `node test.cjs` (38 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), and `node product-test.cjs` (53 product-preflight tests). All 119 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
+Run `node test.cjs` (38 edit-review tests), `node snapshot-test.cjs` (28 snapshot tests), `node product-test.cjs` (54 product-preflight tests), and `node ecwid-scope-test.cjs` (22 Ecwid scope-check tests). All 142 are synthetic-fixture tests, not merchant validation. No live merchant file, store import, revenue or customer deployment is claimed. Each HTML file contains its own engine and can be opened locally in a modern browser. Test scripts must sit beside their matching HTML files.
 
 ## Product decision - October 14, 2026
 
