@@ -11,7 +11,7 @@ function parseCSV(text){
  }
  if(quoted)throw Error('Unclosed quoted CSV field.');
  row.push(cell);if(row.some(x=>x!==''))rows.push(row);
- if(rows.length<2)throw Error('CSV needs a header and at least one inventory row.');
+ if(rows.length<2)throw Error('CSV needs a header and at least one product row.');
  let rawHeaders=rows.shift(),paddedHeaders=rawHeaders.filter(x=>x!==x.trim());let headers=rawHeaders.map(x=>x.trim());if(new Set(headers).size!==headers.length)throw Error('Duplicate CSV headers.');
  return {headers,paddedHeaders,rows:rows.map((r,i)=>{if(r.length!==headers.length)throw Error('CSV row '+(i+2)+' has the wrong number of columns.');return Object.fromEntries(headers.map((h,j)=>[h,r[j]]));})};
 }
