@@ -1,0 +1,35 @@
+const fs=require('node:fs'),vm=require('node:vm'),a=require('node:assert/strict');
+vm.runInThisContext(fs.readFileSync(__dirname+'/ecwid-scope.html','utf8').match(/<script>([\s\S]*?)<\/script>/)[1]);
+const {parseCSV,compare,reportCSV}=globalThis.ScopeCheck;
+let n=0;function t(name,f){f();n++;console.log('PASS '+name);}
+const headers=['type','product_internal_id','product_sku','product_name','product_option_name','product_option_type','product_option_value','product_variation_option_Size','product_variation_sku'];
+const csv=rows=>[headers,...rows].map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+const prod=(id,sku,name)=>['product',id,sku,name,'','','','',''];
+const opt=(id,sku,name2,type,val)=>['product_option',id,sku,'',name2,type,val,'',''];
+const vr=(id,sku,size,vsku)=>['product_variation',id,sku,'','','','',size,vsku];
+const demoBase=csv([prod('101','DRESS','Fictional dress'),opt('101','DRESS','Size','RADIOBUTTONS','S'),opt('101','DRESS','Size','RADIOBUTTONS','M'),vr('101','DRESS','S','DRESS-S'),vr('101','DRESS','M','DRESS-M')]);
+const demoNext=csv([vr('101','DRESS','S','DRESS-S')]);
+
+t('demo fixture: one omitted variation, one scope, no issues',()=>{let r=compare(demoBase,demoNext);a.equal(r.findings.length,1);a.equal(r.touched,1);a.equal(r.issues.length,0);let f=r.findings[0];a.equal(f.kind,'variation');a.equal(f.detail,'Size=M');a.equal(f.variationSku,'DRESS-M');a.equal(f.product,'Fictional dress');a.equal(f.id,'101');a.equal(f.sku,'DRESS');a.equal(f.record,6);});
+t('parse minimal catalog',()=>{let p=parseCSV(csv([prod('1','A','One')]));a.equal(p.rows.length,1);a.equal(p.rows[0]._record,2);});
+t('BOM accepted',()=>a.equal(parseCSV('\uFEFF'+csv([prod('1','A','One')])).rows.length,1));
+t('over 10 MB stops',()=>a.throws(()=>parseCSV('x'.repeat(10*1024*1024+1)),/10 MB/));
+t('legacy headers stop',()=>a.throws(()=>parseCSV('name,price\nx,1\n'),/Legacy Ecwid/));
+t('duplicate headers stop',()=>a.throws(()=>parseCSV('product_sku,product_sku\nA,A\n'),/duplicate/));
+t('blank header stops',()=>a.throws(()=>parseCSV('product_sku,\nA,B\n'),/Blank or duplicate/));
+t('ragged row stops',()=>a.throws(()=>parseCSV('product_sku,product_name\nA\n'),/expected 2/));
+t('unclosed quote stops',()=>a.throws(()=>parseCSV('product_sku\n"A\n'),/Unclosed/));
+t('multiline quoted field keeps record numbers',()=>{let p=parseCSV('product_sku,product_name\nA,"x\ny"\nB,two\n');a.equal(p.rows[0]._record,2);a.equal(p.rows[1]._record,3);});
+t('product-only planned edit no findings',()=>{let r=compare(demoBase,csv([prod('101','DRESS','Fictional dress renamed')]));a.equal(r.findings.length,0);a.equal(r.touched,0);a.equal(r.issues.length,0);});
+t('unknown planned product identity unresolved',()=>{let r=compare(demoBase,csv([prod('999','GHOST','Ghost')]));a.equal(r.issues.length,1);a.equal(r.issues[0].file,'planned');});
+t('conflicting id and sku unresolved',()=>{let b=csv([prod('1','A','One'),prod('2','B','Two')]);let r=compare(b,csv([vr('1','B','S','X-S')]));a.equal(r.issues.length,1);a.ok(r.issues[0].detail.includes('conflicting'));});
+t('ambiguous sku unresolved',()=>{let b=csv([prod('','A','One'),prod('','A','Two')]);let r=compare(b,csv([vr('','A','S','X-S')]));a.equal(r.issues.length,1);});
+t('option row missing type unresolved',()=>{let r=compare(demoBase,csv([['product_option','101','DRESS','','Size','','','','']]));a.equal(r.issues.length,1);a.ok(r.issues[0].detail.includes('product_option_name and product_option_type'));});
+t('variation without option values unresolved',()=>{let r=compare(demoBase,csv([vr('101','DRESS','','X')]));a.equal(r.issues.length,1);});
+t('unknown row type flagged, category ignored',()=>{let r=compare(demoBase,csv([['mystery','101','DRESS','','','','','',''],['category','','','Cat','','','','',''],vr('101','DRESS','S','DRESS-S')]));a.equal(r.issues.length,1);a.ok(r.issues[0].detail.includes('Unknown row type'));});
+t('duplicate planned variation identity flagged',()=>{let r=compare(demoBase,csv([vr('101','DRESS','S','DRESS-S'),vr('101','DRESS','S','DRESS-S2')]));a.equal(r.issues.length,1);a.ok(r.issues[0].detail.includes('Duplicate'));});
+t('option scope replaces options and variations',()=>{let r=compare(demoBase,csv([opt('101','DRESS','Size','RADIOBUTTONS','S')]));a.equal(r.findings.length,3);a.deepEqual(r.findings.map(f=>f.kind).sort(),['option / input field','variation','variation']);a.equal(r.touched,1);a.deepEqual(r.findings.filter(f=>f.kind==='variation').map(f=>f.variationSku).sort(),['DRESS-M','DRESS-S']);});
+t('variation-only scope leaves options alone',()=>{let r=compare(demoBase,demoNext);a.equal(r.findings.length,1);a.equal(r.findings[0].kind,'variation');});
+t('baseline without product rows stops',()=>a.throws(()=>compare(csv([opt('101','DRESS','Size','RADIOBUTTONS','S')]),demoNext),/Baseline needs product rows/));
+t('report csv guards formulas and quotes',()=>{let r=compare(demoBase,demoNext);r.findings[0].product='=1+1';let out=reportCSV(r);a.ok(out.startsWith('\uFEFF'));a.ok(out.includes('"'+"'"+'=1+1"'));a.ok(out.includes('\r\n'));});
+console.log(n+' tests passed. Synthetic fixtures only.');
