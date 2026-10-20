@@ -45,4 +45,15 @@ t('header trailing space error',()=>a.ok(codes(ok.replace('Price','Price ')).inc
 t('header leading space error',()=>a.ok(codes(ok.replace('Title',' Title')).includes('HEADER_WHITESPACE')));
 t('clean headers no whitespace finding',()=>a.ok(!codes(ok).includes('HEADER_WHITESPACE')));
 t('whitespace header still reviewed trimmed',()=>a.ok(codes(ok.replace('Status','Status ').replace('active','ready')).includes('STATUS_VALUE')));
+let bh='URL handle,Title,Option1 name,Option1 value,Barcodes\n',brow=(v)=>codes(bh+'shirt,Shirt,Color,Blue,'+v+'\n');
+t('barcode headers conflict',()=>a.ok(codes('URL handle,Title,Barcode,Barcodes\na,A,1,2\n').includes('BARCODE_HEADERS_CONFLICT')));
+t('legacy barcode header conflicts with plural',()=>a.ok(codes('URL handle,Title,Variant Barcode,Barcodes\na,A,1,2\n').includes('BARCODE_HEADERS_CONFLICT')));
+t('singular barcode alone no conflict',()=>a.ok(!codes('URL handle,Title,Barcode\na,A,12345678905\n').includes('BARCODE_HEADERS_CONFLICT')));
+t('documented barcodes example clean',()=>a.equal(brow('gtin:00012345678905; upc:012345678905; INTERNAL-123').length,0));
+t('barcodes over 20 warns',()=>a.ok(brow(Array.from({length:21},(x,i)=>'B'+i).join('; ')).includes('BARCODES_COUNT')));
+t('barcodes exactly 20 no count finding',()=>a.ok(!brow(Array.from({length:20},(x,i)=>'B'+i).join('; ')).includes('BARCODES_COUNT')));
+t('barcodes empty entry warns',()=>a.ok(brow('A;; B').includes('BARCODES_EMPTY_ENTRY')));
+t('barcodes trailing separator warns',()=>a.ok(brow('A; ').includes('BARCODES_EMPTY_ENTRY')));
+t('barcodes escaped semicolon single value',()=>a.equal(brow('INTERNAL-\\;X').length,0));
+t('plural barcodes variant dependency',()=>a.ok(codes('URL handle,Title,Barcodes\na,A,123\n').includes('VARIANT_OPTIONS_MISSING')));
 console.log(n+' tests passed. Synthetic fixtures only.');
