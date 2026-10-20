@@ -40,4 +40,9 @@ t('packed bad unit warns',()=>a.ok(pk('2,3,4,mm,true').includes('PACKED_UNIT')))
 t('partial packed headers with value warns',()=>a.ok(codes('URL handle,Title,Packed product length\nshirt,Shirt,2\n').includes('PACKED_FIELDS_INCOMPLETE')));
 t('no packed columns no blank clear',()=>a.ok(!codes(ok).includes('PACKED_SIZE_BLANK_CLEAR')));
 t('blank image continuation no blank clear',()=>a.ok(!codes(packedHead+'shirt,Shirt,Title,Default Title,2,3,4,cm,true\nshirt,,,,,,,,\n').includes('PACKED_SIZE_BLANK_CLEAR')));
+t('non-UTF-8 replacement character stops',()=>a.throws(()=>checkProductCSV(ok.replace('Shirt','Shirt\uFFFD')),/UTF-8/));
+t('header trailing space error',()=>a.ok(codes(ok.replace('Price','Price ')).includes('HEADER_WHITESPACE')));
+t('header leading space error',()=>a.ok(codes(ok.replace('Title',' Title')).includes('HEADER_WHITESPACE')));
+t('clean headers no whitespace finding',()=>a.ok(!codes(ok).includes('HEADER_WHITESPACE')));
+t('whitespace header still reviewed trimmed',()=>a.ok(codes(ok.replace('Status','Status ').replace('active','ready')).includes('STATUS_VALUE')));
 console.log(n+' tests passed. Synthetic fixtures only.');
